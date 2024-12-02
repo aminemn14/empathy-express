@@ -16,7 +16,7 @@ function Game() {
     updatedPlayers[playerIndex].points += 1;
 
     // Check for winner
-    if (updatedPlayers[playerIndex].points > 20) {
+    if (updatedPlayers[playerIndex].points > 19) {
       setWinner(updatedPlayers[playerIndex].name);
     } else {
       setPlayers(updatedPlayers);
