@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { XMarkIcon, InformationCircleIcon } from "@heroicons/react/24/outline"; // Import de l'icône
+import { XMarkIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
