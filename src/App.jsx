@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
+import { Link } from "react-router-dom";
 
 const colors = [
   "bg-yellow-900",
@@ -108,13 +109,13 @@ function App() {
     <div className="relative flex flex-col items-center justify-start h-screen bg-gray-100">
       {/* Icône "Information" */}
       {!gameStarted && (
-        <a
-          href="/summary"
+        <Link
+          to="/summary"
           className="absolute top-4 right-4 text-blue-500 bg-white shadow-md rounded-full hover:text-blue-700 transition duration-300"
           title="Game Summary"
         >
           <InformationCircleIcon className="h-8 w-8" />
-        </a>
+        </Link>
       )}
 
       {/* Ajouter des joueurs (avant le début du jeu) */}

@@ -17,7 +17,6 @@ const Summary = () => {
 
   return (
     <div className="font-sans">
-      {/* Barre fixe avec le lien */}
       <div
         className={`fixed top-0 left-0 w-full bg-white px-6 py-4 z-50 transition-shadow duration-300 ${
           scrolled ? "shadow-md" : ""
