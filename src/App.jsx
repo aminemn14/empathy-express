@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, InformationCircleIcon } from "@heroicons/react/24/outline"; // Import de l'icône
 import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
 
 const colors = [
+  "bg-yellow-900",
   "bg-red-500",
-  "bg-blue-500",
-  "bg-green-500",
+  "bg-emerald-500",
   "bg-yellow-500",
   "bg-purple-500",
   "bg-pink-500",
@@ -18,10 +18,44 @@ function App() {
   const [players, setPlayers] = useState([]);
   const [playerName, setPlayerName] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [setError] = useState("");
   const [gameStarted, setGameStarted] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [winner, setWinner] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlayerIds, setSelectedPlayerIds] = useState([]);
+
+  const togglePlayerSelection = (playerId) => {
+    setSelectedPlayerIds((prevSelected) =>
+      prevSelected.includes(playerId)
+        ? prevSelected.filter((id) => id !== playerId)
+        : [...prevSelected, playerId]
+    );
+  };
+
+  const givePoint = () => {
+    if (selectedPlayerIds.length > 0) {
+      const updatedPlayers = players.map((player) =>
+        selectedPlayerIds.includes(player.id)
+          ? { ...player, points: player.points + 1 }
+          : player
+      );
+
+      setPlayers(updatedPlayers);
+
+      // Vérifiez si un joueur a gagné
+      const winnerPlayer = updatedPlayers.find((player) => player.points >= 20);
+      if (winnerPlayer) {
+        setWinner(winnerPlayer.name);
+        setIsModalOpen(false);
+        return; // Ne passe pas au joueur suivant si le jeu est terminé
+      }
+
+      // Réinitialiser la sélection et passer au joueur suivant
+      setSelectedPlayerIds([]);
+      setIsModalOpen(false);
+      setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
+    }
+  };
 
   const addPlayer = () => {
     if (playerName.trim() === "") {
@@ -36,7 +70,7 @@ function App() {
 
     setPlayers([
       ...players,
-      { id: uuidv4(), name: playerName, color: selectedColor, points: 1 },
+      { id: uuidv4(), name: playerName, color: selectedColor, points: 0 },
     ]);
     setPlayerName("");
     setSelectedColor("");
@@ -46,40 +80,46 @@ function App() {
     setPlayers(players.filter((player) => player.id !== id));
   };
 
-  const isColorUsed = (color) =>
-    players.some((player) => player.color === color);
+  const skipTurn = () => {
+    setSelectedPlayerIds([]);
+    setIsModalOpen(false);
+    setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % players.length);
+  };
 
   const startGame = () => {
     if (players.length >= 2) {
+      const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+      setPlayers(shuffledPlayers);
       setGameStarted(true);
+      setCurrentPlayerIndex(0);
     } else {
-      setError("At least 2 players are required to start the game.");
+      toast.error("At least 2 players are required to start the game.");
     }
-  };
-
-  const handleAddPoint = (playerIndex) => {
-    const updatedPlayers = [...players];
-    updatedPlayers[playerIndex].points += 1;
-
-    if (updatedPlayers[playerIndex].points > 19) {
-      setWinner(updatedPlayers[playerIndex].name);
-    } else {
-      setPlayers(updatedPlayers);
-    }
-    setModalOpen(false);
   };
 
   const restartGame = () => {
     setPlayers([]);
     setGameStarted(false);
     setWinner(null);
+    setCurrentPlayerIndex(0);
   };
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen bg-gray-100">
-      {/* Section Ajout de joueur - visible uniquement avant le début du jeu */}
+    <div className="relative flex flex-col items-center justify-start h-screen bg-gray-100">
+      {/* Icône "Information" */}
       {!gameStarted && (
-        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-sm mt-4">
+        <a
+          href="/summary"
+          className="absolute top-4 right-4 text-blue-500 bg-white shadow-md rounded-full hover:text-blue-700 transition duration-300"
+          title="Game Summary"
+        >
+          <InformationCircleIcon className="h-8 w-8" />
+        </a>
+      )}
+
+      {/* Ajouter des joueurs (avant le début du jeu) */}
+      {!gameStarted && (
+        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-sm mt-16">
           <h1 className="text-xl font-bold mb-4">Add a player</h1>
           <input
             type="text"
@@ -92,18 +132,29 @@ function App() {
           <label className="block text-gray-600 mb-2">Choose a color:</label>
           <div className="flex justify-between mb-4">
             {colors.map((color) => (
-              <button
+              <div
                 key={color}
-                className={`w-8 h-8 rounded-full border-2 ${
-                  selectedColor === color
-                    ? "border-black"
-                    : "border-transparent"
-                } ${color} ${
-                  isColorUsed(color) ? "opacity-50 cursor-not-allowed" : ""
+                className={`w-10 h-10 flex items-center justify-center rounded-full transition duration-300 ${
+                  players.some((player) => player.color === color)
+                    ? "opacity-20 cursor-not-allowed"
+                    : ""
                 }`}
-                onClick={() => !isColorUsed(color) && setSelectedColor(color)}
-                disabled={isColorUsed(color)}
-              ></button>
+                style={{
+                  border:
+                    selectedColor === color
+                      ? "2px solid black"
+                      : "2px solid transparent",
+                }}
+              >
+                <button
+                  className={`w-8 h-8 rounded-full ${color}`}
+                  onClick={() =>
+                    !players.some((player) => player.color === color) &&
+                    setSelectedColor(color)
+                  }
+                  disabled={players.some((player) => player.color === color)}
+                ></button>
+              </div>
             ))}
           </div>
 
@@ -114,18 +165,7 @@ function App() {
           >
             Add player
           </button>
-
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
+          <ToastContainer />
         </div>
       )}
 
@@ -135,8 +175,8 @@ function App() {
           <AnimatePresence>
             {players.map((player) => (
               <motion.div
-                key={player.id} // Utiliser un ID unique comme clé
-                layout // Active les animations de réarrangement
+                key={player.id}
+                layout
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
@@ -176,59 +216,62 @@ function App() {
         </div>
       )}
 
-      {/* Section Jeu */}
+      {/* Section du jeu */}
       {gameStarted && (
         <motion.div
           className="flex flex-col items-center px-8 justify-center h-full w-full"
-          initial={{ opacity: 0, y: 50 }} // Position de départ (en bas et invisible)
-          animate={{ opacity: 1, y: 0 }} // Position finale (au centre et visible)
-          exit={{ opacity: 0, y: 50 }} // Position quand l'élément disparaît (facultatif)
-          transition={{ duration: 0.5, ease: "easeOut" }} // Durée et type de transition
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              Scoreboard
+            <h1 className="text-2xl font-bold mb-6">
+              {players[currentPlayerIndex].name}'s Turn
             </h1>
-            <div className="w-full">
-              {players.map((player, index) => (
-                <div key={index} className="mb-6">
-                  <p className="text-lg font-semibold text-gray-800">
-                    {player.name}
-                  </p>
-                  <div className="flex gap-2 mt-2 flex-nowrap">
-                    {Array.from({ length: 20 }).map((_, pointIndex) => (
+
+            <div className="mt-12 mb-20">
+              {players.map((player) => (
+                <div key={player.id} className="mb-4">
+                  <p className="text-lg font-semibold mb-4">{player.name}</p>
+                  <div className="flex gap-1 flex-wrap">
+                    {Array.from({ length: 20 }).map((_, i) => (
                       <div
-                        key={pointIndex}
-                        className={`h-2 w-2 sm:h-4 sm:w-4 rounded-full ${
-                          pointIndex + 1 <= player.points
+                        key={i}
+                        className={`rounded-full ${
+                          i < player.points
                             ? player.color
                             : `${player.color} opacity-20`
                         }`}
-                        style={{ flexShrink: 0 }}
+                        style={{
+                          height: "clamp(0.75rem, 1vw, 1.25rem)", // Ajuste la taille à des proportions légèrement plus grandes
+                          width: "clamp(0.75rem, 1vw, 1.25rem)",
+                        }}
                       ></div>
                     ))}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-center h-full">
+            <div className="flex gap-4">
               <button
-                onClick={() => setModalOpen(true)}
-                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
+                onClick={() => setIsModalOpen(true)}
+                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300"
               >
-                Add a point
+                Choose Player to Give Point
               </button>
             </div>
           </div>
         </motion.div>
       )}
-      {/* Modals */}
-      {modalOpen && (
+
+      {/* Modale du gagnant */}
+      {winner && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 flex items-center justify-center px-12 bg-black bg-opacity-50"
+          className="fixed inset-0 flex items-center justify-center px-8 bg-black bg-opacity-50"
         >
           <motion.div
             initial={{ scale: 0.8 }}
@@ -236,55 +279,72 @@ function App() {
             exit={{ scale: 0.8 }}
             className="bg-white rounded-lg shadow-lg p-6 px-12 w-full max-w-md"
           >
-            <h2 className="text-xl font-bold text-gray-800 mb-12">
-              Select a player
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              🎉 {winner} wins! 🎉
             </h2>
-            <div className="flex flex-col gap-4">
-              {players.map((player, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleAddPoint(index)}
-                  className="flex items-center justify-between bg-gray-100 p-4 rounded-md hover:bg-gray-200 transition duration-300"
-                >
-                  <span className="text-lg font-medium text-gray-800">
-                    {player.name}
-                  </span>
-                  <div className={`h-6 w-6 rounded-full ${player.color}`}></div>
-                </button>
-              ))}
-            </div>
             <button
-              onClick={() => setModalOpen(false)}
-              className="w-full bg-red-500 text-white mt-12 py-2 rounded-md hover:bg-red-600 transition duration-300"
+              onClick={restartGame}
+              className="bg-blue-500 text-white py-2 w-full rounded-md hover:bg-blue-600 transition"
             >
-              Cancel
+              Restart Game
             </button>
           </motion.div>
         </motion.div>
       )}
 
-      {winner && (
+      {isModalOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 flex items-center justify-center px-12 bg-black bg-opacity-50"
+          className="fixed inset-0 flex items-center justify-center px-8 bg-black bg-opacity-50"
         >
           <motion.div
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0.8 }}
-            className="bg-white rounded-lg shadow-lg p-6 px-6 w-full max-w-md text-center"
+            className="bg-white rounded-lg shadow-lg p-6 px-12 w-full max-w-md"
           >
-            <h2 className="text-2xl font-bold text-gray-800 mb-12">
-              🎉 &nbsp;{winner} wins! &nbsp;🎉
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Choose players to give points
             </h2>
-            <button
-              onClick={restartGame}
-              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
-            >
-              Restart
-            </button>
+            <div className="space-y-4">
+              {players
+                .filter(
+                  (player) => player.id !== players[currentPlayerIndex].id
+                )
+                .map((player) => (
+                  <button
+                    key={player.id}
+                    onClick={() => togglePlayerSelection(player.id)}
+                    className={`w-full py-2 px-2 rounded-md border-2 transition duration-300 ${
+                      selectedPlayerIds.includes(player.id)
+                        ? "border-blue-400 bg-blue-50"
+                        : "border-gray-100"
+                    } flex items-center justify-between`}
+                  >
+                    <span>{player.name}</span>
+                    <div
+                      className={`w-6 h-6 rounded-full ${player.color}`}
+                    ></div>
+                  </button>
+                ))}
+            </div>
+            <div className="flex gap-4 mt-12">
+              <button
+                onClick={givePoint}
+                className="flex-1 bg-emerald-500 text-white py-2 rounded-md hover:bg-emerald-600 transition duration-300"
+                disabled={selectedPlayerIds.length === 0}
+              >
+                Confirm
+              </button>
+              <button
+                onClick={skipTurn}
+                className="flex-1 bg-red-500 text-white py-2 rounded-md hover:bg-red-400 transition duration-300"
+              >
+                Skip
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}
