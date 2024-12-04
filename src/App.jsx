@@ -7,9 +7,9 @@ import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
 
 const colors = [
-  "bg-yellow-900",
   "bg-red-500",
   "bg-emerald-500",
+  "bg-sky-300",
   "bg-yellow-500",
   "bg-purple-500",
   "bg-pink-500",
@@ -235,7 +235,12 @@ function App() {
               {players.map((player) => (
                 <div key={player.id} className="mb-4">
                   <p className="text-lg font-semibold mb-4">{player.name}</p>
-                  <div className="flex gap-1 flex-wrap">
+                  <div
+                    className="grid grid-cols-10"
+                    style={{
+                      gap: "0.5rem",
+                    }}
+                  >
                     {Array.from({ length: 20 }).map((_, i) => (
                       <div
                         key={i}
@@ -245,7 +250,7 @@ function App() {
                             : `${player.color} opacity-20`
                         }`}
                         style={{
-                          height: "clamp(0.75rem, 1vw, 1.25rem)", // Ajuste la taille à des proportions légèrement plus grandes
+                          height: "clamp(0.75rem, 1vw, 1.25rem)",
                           width: "clamp(0.75rem, 1vw, 1.25rem)",
                         }}
                       ></div>
