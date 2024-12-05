@@ -168,8 +168,7 @@ function App() {
     ],
     2: [
       {
-        situation:
-          "You are interrupted in the middle of an important discussion and cut off without reason.",
+        situation: "#1",
         answers: [
           {
             role: "Co-Worker",
@@ -204,8 +203,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You learn that someone has revealed a very private secret that you had confided to them.",
+        situation: "#2",
         answers: [
           {
             role: "Co-Worker",
@@ -240,8 +238,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You do your best to help someone, but you are blamed for not doing enough or for doing wrong.",
+        situation: "#3",
         answers: [
           {
             role: "Co-Worker",
@@ -276,8 +273,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked to do urgent work when you do not have all the information necessary to do it properly.",
+        situation: "#4",
         answers: [
           {
             role: "Co-Worker",
@@ -312,8 +308,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are publicly criticized for a project that you have spent a lot of time on, without recognizing your efforts.",
+        situation: "#5",
         answers: [
           {
             role: "Co-Worker",
@@ -348,8 +343,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked to participate in an activity, but you are clearly made to feel that you are not welcome.",
+        situation: "#6",
         answers: [
           {
             role: "Co-Worker",
@@ -384,8 +378,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are told that your ideas are bad or useless, without taking into account your point of view.",
+        situation: "#7",
         answers: [
           {
             role: "Co-Worker",
@@ -420,8 +413,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are wrongly accused of doing something that you did not do, and no one is trying to verify the facts.",
+        situation: "#8",
         answers: [
           {
             role: "Co-Worker",
@@ -456,8 +448,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are being pressured to accept an important decision without the opportunity to express your opinion.",
+        situation: "#9",
         answers: [
           {
             role: "Co-Worker",
@@ -492,8 +483,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You make a reasonable request, but you are met with condescending or disinterested responses.",
+        situation: "#10",
         answers: [
           {
             role: "Co-Worker",
@@ -528,8 +518,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are forced to do something that you don’t want, on the pretext that it is for 'your own good'.",
+        situation: "#11",
         answers: [
           {
             role: "Co-Worker",
@@ -564,8 +553,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are given a very complicated explanation of a task and then blamed for not having done it well.",
+        situation: "#12",
         answers: [
           {
             role: "Co-Worker",
@@ -600,8 +588,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked to make a quick decision, but you do not have all the information necessary to be sure of your choice.",
+        situation: "#13",
         answers: [
           {
             role: "Co-Worker",
@@ -636,8 +623,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are given a responsibility, but then left to do it all alone, without support or guidance.",
+        situation: "#14",
         answers: [
           {
             role: "Co-Worker",
@@ -672,8 +658,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "Your concerns or difficulties are minimized, and others have more important problems.",
+        situation: "#15",
         answers: [
           {
             role: "Co-Worker",
@@ -708,8 +693,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are organizing an event, but no one is following the rules or the program you have set up.",
+        situation: "#16",
         answers: [
           {
             role: "Co-Worker",
@@ -744,8 +728,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You share an original idea, and someone takes credit in front of everyone.",
+        situation: "#17",
         answers: [
           {
             role: "Co-Worker",
@@ -780,8 +763,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You send an important message and are completely ignored without explanation.",
+        situation: "#18",
         answers: [
           {
             role: "Co-Worker",
@@ -816,8 +798,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked to change your job after the fact, but without giving you clear new directions.",
+        situation: "#19",
         answers: [
           {
             role: "Co-Worker",
@@ -852,8 +833,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "Someone makes a decision that directly affects you without consulting you.",
+        situation: "#20",
         answers: [
           {
             role: "Co-Worker",
@@ -888,8 +868,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You have a conflict with someone, and that person is posing as the victim to others.",
+        situation: "#21",
         answers: [
           {
             role: "Co-Worker",
@@ -924,8 +903,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are consistently compared to someone else in an unfavorable way, no matter how hard you try.",
+        situation: "#22",
         answers: [
           {
             role: "Co-Worker",
@@ -960,8 +938,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You propose a practical solution to a problem, but it is rejected without argument, then someone else proposes the same and is applauded.",
+        situation: "#23",
         answers: [
           {
             role: "Co-Worker",
@@ -996,8 +973,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked a personal question in front of a group to make you uncomfortable.",
+        situation: "#24",
         answers: [
           {
             role: "Co-Worker",
@@ -1032,8 +1008,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You make an effort to reconcile with someone, but they categorically reject your attempts.",
+        situation: "#25",
         answers: [
           {
             role: "Co-Worker",
@@ -1068,8 +1043,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You propose a practical solution to a problem, but it is rejected without argument, then someone else proposes the same and is applauded.",
+        situation: "#26",
         answers: [
           {
             role: "Co-Worker",
@@ -1104,8 +1078,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are given an important promise, but the person does not keep it without warning you.",
+        situation: "#27",
         answers: [
           {
             role: "Co-Worker",
@@ -1140,8 +1113,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked a personal question in front of a group to make you uncomfortable.",
+        situation: "#28",
         answers: [
           {
             role: "Co-Worker",
@@ -1176,8 +1148,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are being criticized 'constructively,' but it is worded in a way that is unnecessarily hurtful.",
+        situation: "#29",
         answers: [
           {
             role: "Co-Worker",
@@ -1212,8 +1183,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You make an effort to reconcile with someone, but they categorically reject your attempts.",
+        situation: "#30",
         answers: [
           {
             role: "Co-Worker",
@@ -1248,8 +1218,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are doing collaborative work, but someone refuses to participate while criticizing the result.",
+        situation: "#31",
         answers: [
           {
             role: "Co-Worker",
@@ -1284,8 +1253,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked to be available at any time for a project, without respecting your schedule.",
+        situation: "#32",
         answers: [
           {
             role: "Co-Worker",
@@ -1320,8 +1288,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You propose a practical solution to a problem, but it is rejected without argument, then someone else proposes the same and is applauded.",
+        situation: "#33",
         answers: [
           {
             role: "Co-Worker",
@@ -1356,8 +1323,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are given an important promise, but the person does not keep it without warning you.",
+        situation: "#34",
         answers: [
           {
             role: "Co-Worker",
@@ -1392,8 +1358,7 @@ function App() {
         ],
       },
       {
-        situation:
-          "You are asked a personal question in front of a group to make you uncomfortable.",
+        situation: "#35",
         answers: [
           {
             role: "Co-Worker",
