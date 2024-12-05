@@ -13,3 +13,8 @@
 body {
   font-family: "Inter", sans-serif !important;
 }
+
+.modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
